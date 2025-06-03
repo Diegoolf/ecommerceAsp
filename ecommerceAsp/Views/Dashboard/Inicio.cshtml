@@ -1,0 +1,56 @@
+﻿@* @model List<ecommerceAsp.Models.Producto> *@
+
+@{
+    ViewData["Title"] = "Panel Principal";
+}
+
+    <div class="container mt-2 p-0">
+    <h2><i class="bi bi-box-seam-fill"></i> Productos</h2>
+     <hr />
+    <button type="button" class="btn btn-success mb-3 btnAbrirModal">
+        Agregar Producto
+    </button>   
+     <div id="contProductos"> 
+
+     </div>
+
+
+	</div>
+
+<!-- Modal agregar producto -->
+<div class="modal fade" id="ModalAgregarProducto" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="formCrearProducto">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Agregar producto</h5>
+                    <button type="button" class="close btnCerrarModal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <input name="Nombre" id="nombreProducto" class="form-control" autocomplete="nombreproducto" aria-required="true" placeholder="" required />
+                        <label class="form-label">Nombre del producto</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea name="Descripcion" id="descripcionProducto" class="form-control" id="exampleFormControlTextarea1" style="height: 150px"></textarea>
+                        <label for="exampleFormControlTextarea1" class="form-label">Descripcion</label>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/AbrirCerrarModal.js"></script>
+       }
