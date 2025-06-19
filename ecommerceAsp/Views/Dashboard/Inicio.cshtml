@@ -3,45 +3,77 @@
 @{
     ViewData["Title"] = "Panel Principal";
 }
+<style>
+.card1 {
+transition: all 0.3s ease;
+}
 
+.card1:hover {
+background-color: #f8f9fa;
+transform: scale(1.01);
+}
+</style>
     <div class="container mt-2 p-0">
-    <h2><i class="bi bi-box-seam-fill"></i> Productos</h2>
-     <hr />
-    <button type="button" class="btn btn-success mb-3 btnAbrirModal">
-        Agregar Producto
-    </button>   
-     <div id="contProductos"> 
-
-     </div>
+        <div class="d-flex justify-content-between">
+		    <h3><i class="bi bi-box-seam-fill"></i> Productos</h3>
+        <button type="button" class="btn btn-sm btn-secondary mb-3 btnAbrirModal text-white">
+			    <i class="bi bi-plus"></i> Agregar
+		    </button>
+           
+        </div>
+    <hr class="m-0 mb-4" style="border: 0.5px solid #b4ccd4;" />
+        <div id="contProductos" class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xxl-4 g-2">
+        </div>
 
 
 	</div>
 
 <!-- Modal agregar producto -->
 <div class="modal fade" id="ModalAgregarProducto" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <form id="formCrearProducto">
                 @Html.AntiForgeryToken()
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Agregar producto</h5>
-                    <button type="button" class="close btnCerrarModal">
-                        <span aria-hidden="true">&times;</span>
+                    <button type="button" class="btn-close btnCerrarModal">
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body row">
                     <div class="form-floating mb-3">
                         <input name="Nombre" id="nombreProducto" class="form-control" autocomplete="nombreproducto" aria-required="true" placeholder="" required />
-                        <label class="form-label">Nombre del producto</label>
+                        <label class="form-label ms-2">Nombre del producto</label>
                     </div>
                     <div class="form-floating mb-3">
                         <textarea name="Descripcion" id="descripcionProducto" class="form-control" id="exampleFormControlTextarea1" style="height: 150px"></textarea>
-                        <label for="exampleFormControlTextarea1" class="form-label">Descripcion</label>
+                        <label for="exampleFormControlTextarea1" class="form-label ms-2">Descripcion</label>
                     </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select " id="selectCategoria" aria-label="Seleccionar categoría">
+                            <option selected disabled></option>
+                        </select>
+                        <label class="form-label ms-2" for="selectCategoria">Categoría</label>
+                    </div>
+
+                    <div class="form-floating mb-3 col-6">
+                        <input type="number" name="Nombre" id="precio" class="form-control" autocomplete="precio" aria-required="true" placeholder="" required />
+                        <label class="form-label ms-2">Precio</label>
+                    </div>
+                    <div class="form-floating col-6 mb-3">
+                        <input type="number" name="Stock" id="stock" class="form-control" autocomplete="stock" aria-required="true" placeholder="" required />
+                        <label class="form-label ms-2">Stock</label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Subir archivo</label>
+                        <input class="form-control" type="file" id="formFile" name="Imagen" accept="image/*">
+                    </div>
+
+                   
+                   
 
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" style="background:#78c0ca" class="btn">Agregar</button>
                 </div>
 
             </form>
@@ -50,7 +82,95 @@
     </div>
 </div>
 
+<!-- Modal editar producto -->
+<div class="modal fade" id="ModalEditarProducto" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="formEditarProducto">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Editar producto</h5>
+                    <button type="button" class="btn-close btnCerrarModalEdit">
+                    </button>
+                </div>
+                <div class="modal-body row">
+                    <div class="form-floating mb-3">
+                        <input name="Nombre" id="nombreProductoEdit" class="form-control" autocomplete="nombreproducto" aria-required="true" placeholder="" required />
+                        <label class="form-label ms-2">Nombre del producto</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea name="Descripcion" id="descripcionProductoEdit" class="form-control" id="exampleFormControlTextarea1" style="height: 150px"></textarea>
+                        <label for="exampleFormControlTextarea1" class="form-label ms-2">Descripcion</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select class="form-select " id="selectCategoriaEdit" aria-label="Seleccionar categoría">
+                            <option selected disabled></option>
+                        </select>
+                        <label class="form-label ms-2" for="selectCategoriaEdit">Categoría</label>
+                    </div>
+
+                    <div class="form-floating mb-3 col-6">
+                        <input type="number" name="Nombre" id="precioEdit" class="form-control" autocomplete="precio" aria-required="true" placeholder="" required />
+                        <label class="form-label ms-2">Precio</label>
+                    </div>
+                    <div class="form-floating col-6 mb-3">
+                        <input type="number" name="Stock" id="stockEdit" class="form-control" autocomplete="stock" aria-required="true" placeholder="" required />
+                        <label class="form-label ms-2">Stock</label>
+                    </div>
+                    <input type="hidden" name="id" id="inputIdProductoEdit" />
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" style="background-color:#78c0ca" class="btn">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@* modal activar/desactivar *@
+<div class="modal fade" id="ModalActivar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formCambiarEstado">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><span class="SpanAct"></span> producto: <b class="SpanNombre"></b></h5>
+                    <button type="button" class="btn-close btnCerrarModalAct" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Esta seguro de que desea <b class="SpanAct"></b> el producto <b class="SpanNombre"></b>?
+                    <input type="hidden" name="id" id="inputIdProductoAct" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btnCerrarModalAct">Close</button>
+                    <button type="submit" id="btnActualizarEstatus" class="btn btn-outline-danger"><b class="SpanAct"></b> </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script src="~/js/AbrirCerrarModal.js"></script>
+    <script src="~/js/Producto.js"></script>
+
+
+
+    <script>
+        document.getElementById('formFile').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file && !file.type.startsWith('image/')) {
+                    Swal.fire({
+                    title: 'Error',
+                    text: 'solo se permiten imagenes',
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar'
+                });
+                e.target.value = ''; // Borra el archivo seleccionado
+            }
+        });
+    </script>
+
        }
